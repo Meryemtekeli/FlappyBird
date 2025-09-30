@@ -129,7 +129,7 @@ namespace FlappyBird
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources.background;
+            BackgroundImage = Properties.Resources.s;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(962, 649);
             Controls.Add(gameOverText);
