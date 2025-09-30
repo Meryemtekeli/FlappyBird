@@ -1,60 +1,68 @@
-using System;
+ï»¿using System;
 using System.Windows.Forms;
 
 namespace FlappyBird
 {
     public partial class Form1 : Form
     {
-        int gravity = 8;      // kuþun düþme hýzý
-        int pipeSpeed = 8;    // borularýn hýzý
-        int score = 0;        // skor
+        int gravity = 8;
+        int pipeSpeed = 8;
+        int score = 0;
+        Random rand = new Random();
 
         public Form1()
         {
             InitializeComponent();
+            this.KeyPreview = true; // ðŸ”‘ TuÅŸlar Ã¶nce form tarafÄ±ndan yakalanÄ±r
         }
 
         private void gameTimer_Tick(object sender, EventArgs e)
         {
-            bird.Top += gravity;            // kuþu aþaðýya doðru hareket ettir
-            pipeBottom.Left -= pipeSpeed;   // alt boru sola kaydýr
-            pipeTop.Left -= pipeSpeed;      // üst boru sola kaydýr
-            scoreText.Text = "Score: " + score; // skoru ekrana yazdýr
+            bird.Top += gravity;
+            pipeBottom.Left -= pipeSpeed;
+            pipeTop.Left -= pipeSpeed;
+            scoreText.Text = "Score: " + score;
 
-            // borular ekranýn solundan çýkarsa tekrar saðdan gelsin
             if (pipeBottom.Left < -150)
             {
-                pipeBottom.Left = 800;
+                pipeBottom.Left = 650;
+                pipeBottom.Top = rand.Next(350, 450);
                 score++;
             }
-            if (pipeTop.Left < -180)
+            if (pipeTop.Left < -150)
             {
-                pipeTop.Left = 950;
+                pipeTop.Left = 650;
+                pipeTop.Top = rand.Next(-200, -50);
                 score++;
             }
 
-            // kuþ borulara veya zemine çarparsa oyun bitsin
             if (bird.Bounds.IntersectsWith(pipeBottom.Bounds) ||
                 bird.Bounds.IntersectsWith(pipeTop.Bounds) ||
                 bird.Bounds.IntersectsWith(ground.Bounds) ||
-                bird.Top < -25) // ekranýn üstüne çýkarsa da oyun bitsin
+                bird.Top < -25)
             {
                 endGame();
             }
-        }
 
+            if (score > 5 && pipeSpeed == 8)
+                pipeSpeed = 10;
+            if (score > 10 && pipeSpeed == 10)
+                pipeSpeed = 12;
+            if (score > 15 && pipeSpeed == 12)
+                pipeSpeed = 15;
+        }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Space) // boþluða basýldýðýnda kuþ yukarý zýplasýn
+            if (e.KeyCode == Keys.Space)
             {
-                gravity = -8;
+                gravity = -10;
             }
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Space) // boþluðu býraktýðýnda kuþ tekrar düþmeye baþlasýn
+            if (e.KeyCode == Keys.Space)
             {
                 gravity = 8;
             }
@@ -63,7 +71,43 @@ namespace FlappyBird
         private void endGame()
         {
             gameTimer.Stop();
-            scoreText.Text += "   Game Over!";
+            restartButton.Visible = true;
+            gameOverText.Visible = true;
+            restartButton.BringToFront();
+            gameOverText.BringToFront();
+        }
+
+        private void restartButton_Click(object sender, EventArgs e)
+        {
+            restartButton.Visible = false;
+            gameOverText.Visible = false;
+
+            score = 0;
+            pipeSpeed = 8;
+            gravity = 8;
+
+            bird.Top = 262;
+            bird.Left = 133;
+
+            pipeTop.Left = 650;
+            pipeTop.Top = 0;
+            pipeBottom.Left = 450;
+            pipeBottom.Top = 366;
+
+            scoreText.Text = "Score: 0";
+
+            gameTimer.Start();
+
+            this.Focus(); // ðŸ”‘ Form yeniden odaklanÄ±yor
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.KeyPreview = true; // ðŸ”‘ Loadâ€™da da garanti olsun
+        }
+
+        private void pipeBottom_Click(object sender, EventArgs e)
+        {
         }
     }
 }

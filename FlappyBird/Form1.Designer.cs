@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraRichEdit.Model;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace FlappyBird
 {
@@ -26,6 +27,8 @@ namespace FlappyBird
             ground = new PictureBox();
             scoreText = new Label();
             gameTimer = new System.Windows.Forms.Timer(components);
+            restartButton = new Button();
+            gameOverText = new Label();
             ((System.ComponentModel.ISupportInitialize)bird).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pipeTop).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pipeBottom).BeginInit();
@@ -36,7 +39,7 @@ namespace FlappyBird
             // 
             bird.BackColor = Color.Transparent;
             bird.Image = Properties.Resources.bird;
-            bird.Location = new Point(100, 272);
+            bird.Location = new Point(133, 262);
             bird.Name = "bird";
             bird.Size = new Size(50, 50);
             bird.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -58,19 +61,20 @@ namespace FlappyBird
             // 
             pipeBottom.BackColor = Color.Transparent;
             pipeBottom.Image = Properties.Resources.pipeBottom;
-            pipeBottom.Location = new Point(500, 400);
+            pipeBottom.Location = new Point(457, 366);
             pipeBottom.Name = "pipeBottom";
-            pipeBottom.Size = new Size(80, 250);
+            pipeBottom.Size = new Size(80, 235);
             pipeBottom.SizeMode = PictureBoxSizeMode.StretchImage;
             pipeBottom.TabIndex = 2;
             pipeBottom.TabStop = false;
+            pipeBottom.Click += pipeBottom_Click;
             // 
             // ground
             // 
             ground.Image = Properties.Resources.ground;
-            ground.Location = new Point(-10, 675);
+            ground.Location = new Point(-10, 557);
             ground.Name = "ground";
-            ground.Size = new Size(820, 75);
+            ground.Size = new Size(1051, 97);
             ground.SizeMode = PictureBoxSizeMode.StretchImage;
             ground.TabIndex = 3;
             ground.TabStop = false;
@@ -93,13 +97,43 @@ namespace FlappyBird
             gameTimer.Interval = 20;
             gameTimer.Tick += gameTimer_Tick;
             // 
+            // restartButton
+            // 
+            restartButton.BackColor = Color.Orange;
+            restartButton.Cursor = Cursors.Hand;
+            restartButton.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            restartButton.ForeColor = Color.White;
+            restartButton.Location = new Point(356, 350);
+            restartButton.Name = "restartButton";
+            restartButton.Size = new Size(250, 70);
+            restartButton.TabIndex = 5;
+            restartButton.Text = "TEKRAR OYNA";
+            restartButton.UseVisualStyleBackColor = false;
+            restartButton.Visible = false;
+            restartButton.Click += restartButton_Click;
+            // 
+            // gameOverText
+            // 
+            gameOverText.AutoSize = true;
+            gameOverText.BackColor = Color.Transparent;
+            gameOverText.Font = new Font("Segoe UI", 36F, FontStyle.Bold);
+            gameOverText.ForeColor = Color.Red;
+            gameOverText.Location = new Point(300, 250);
+            gameOverText.Name = "gameOverText";
+            gameOverText.Size = new Size(362, 81);
+            gameOverText.TabIndex = 6;
+            gameOverText.Text = "GAME OVER";
+            gameOverText.Visible = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.background;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(800, 750);
+            ClientSize = new Size(962, 649);
+            Controls.Add(gameOverText);
+            Controls.Add(restartButton);
             Controls.Add(scoreText);
             Controls.Add(ground);
             Controls.Add(pipeBottom);
@@ -108,7 +142,8 @@ namespace FlappyBird
             DoubleBuffered = true;
             KeyPreview = true;
             Name = "Form1";
-            Text = "s";
+            Text = "Flappy Bird";
+            Load += Form1_Load;
             KeyDown += Form1_KeyDown;
             KeyUp += Form1_KeyUp;
             ((System.ComponentModel.ISupportInitialize)bird).EndInit();
@@ -127,5 +162,7 @@ namespace FlappyBird
         private System.Windows.Forms.PictureBox ground;
         private System.Windows.Forms.Label scoreText;
         private System.Windows.Forms.Timer gameTimer;
+        private System.Windows.Forms.Button restartButton;
+        private System.Windows.Forms.Label gameOverText;
     }
-}   
+}
